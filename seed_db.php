@@ -1,5 +1,7 @@
 <?php
 
+require_once('pdo_config.php');
+
 $total = intval($argv[1]);
 $minPrice = intval($argv[2]);
 $maxPrice = intval($argv[3]);
