@@ -13,3 +13,12 @@ $opt = [
     PDO::ATTR_EMULATE_PREPARES   => false,
 ];
 $pdo = new PDO($dsn, $user, $pass, $opt);
+
+$table = 'products';
+// check if install.sql was imported
+try {
+    $result = $pdo->query("SELECT 1 FROM $table LIMIT 1");
+} catch (Exception $e) {
+    // We got an exception == table not found
+    exit('Please import install.sql to your database');
+}
