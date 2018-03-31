@@ -1,4 +1,11 @@
 <?php
 
-$stmt = $pdo->prepare("");
+$stmt = $pdo->prepare("CALL `get30products`(@p0, @p1); SELECT @p0 AS `str`, @p1 AS `remainingPrice`;");
 
+$stmt->execute();
+
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$remainingPrice = $result['remainingPrice'];
+echo 'Found collection of ' . $result['str'] . "\n";
+echo "Not Found collection\n";
