@@ -29,6 +29,28 @@ BEGIN
        LIMIT 1;
 END;
 
+CREATE PROCEDURE `findProductWithExactPrice`(IN `exactPrice` DECIMAL(8,2), OUT `productId` INT(11))
+    READS SQL DATA
+BEGIN
+  SET productId = 0;
+  SELECT id INTO productId 
+  FROM products 
+  WHERE price = exactPrice
+  ORDER BY RAND()
+  LIMIT 1;
+END;
+
+CREATE PROCEDURE `findProductClosestToPrice`(IN `priceLimit` DECIMAL(8,2), OUT `productId` INT(11))
+    READS SQL DATA
+BEGIN
+	SET productId = 0;
+	SELECT id INTO productId 
+	FROM products 
+	WHERE price <= priceLimit
+	ORDER BY RAND()
+	LIMIT 1;
+END;
+
 CREATE PROCEDURE `get30products`(OUT `str` TEXT, OUT `remainingPrice` DECIMAL(8,2))
 BEGIN
   DECLARE x INT;
