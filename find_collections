@@ -7,5 +7,16 @@ $stmt->execute();
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $remainingPrice = $result['remainingPrice'];
-echo 'Found collection of ' . $result['str'] . "\n";
-echo "Not Found collection\n";
+
+$stmt = $pdo->prepare("CALL `findProductWithExactPrice`(?, @p1); SELECT @p0 AS `str`, @p1 AS `productId`;");
+
+$stmt->execute([$remainingPrice]);
+
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if($result['productId'] == 0) {
+     echo "Not Found collection\n";
+}
+else {
+     echo 'Found collection of ' . $result['str'] . ',' . $result['productId'] . "\n";
+}
