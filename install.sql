@@ -47,7 +47,7 @@ BEGIN
 	SELECT id INTO productId 
 	FROM products 
 	WHERE price <= priceLimit
-	ORDER BY RAND()
+	ORDER BY price DESC
 	LIMIT 1;
 END;
 
