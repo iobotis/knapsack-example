@@ -5,6 +5,14 @@ CREATE TABLE `products` (
  PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `results` (
+  `id` int(11) NOT NULL,
+  `totalItems` int(5) NOT NULL,
+  `totalPrice` double(12,2) NOT NULL,
+  `items` varchar(2047) NOT NULL,
+   PRIMARY KEY (`id`)
+);
+
 CREATE PROCEDURE `InsertRand`(IN NumRows INT, IN MinVal INT, IN MaxVal INT)
 BEGIN
     DECLARE i INT;
