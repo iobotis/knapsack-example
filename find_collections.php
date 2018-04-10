@@ -1,5 +1,7 @@
 <?php
 
+require_once('pdo_config.php');
+
 echo "Please choose: \n";
 echo "1. Find exact collections.\n";
 echo "2. Find close upper limit collections.\n";
