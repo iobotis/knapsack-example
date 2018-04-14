@@ -1,0 +1,34 @@
+<?php
+
+class KnapsackAlgorithm {
+
+    private $pdo;
+    
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
+    
+    public function install()
+    {
+        if(!$this->isInstalled()) {
+        }
+    }
+    
+    public function isInstalled()
+    {
+        return false;
+    }
+    
+    public function findOneCollection()
+    {
+    }
+    
+    public function findMultipleCollections($total)
+    {
+    }
+    
+    public function findAndSaveCollections()
+    {
+    }
+}
