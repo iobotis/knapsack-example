@@ -48,6 +48,15 @@ class KnapsackAlgorithm {
     
     public function findMultipleCollections($total)
     {
+        $collections = [];
+        for($i = 0; $i < $total; $i++) {
+            try {
+                $collections[] = $this->findOneCollection();
+            }
+            catch(Exception $e) {
+            }
+        }
+        return $collections;
     }
     
     public function findAndSaveCollections()
