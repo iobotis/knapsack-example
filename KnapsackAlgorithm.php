@@ -33,6 +33,17 @@ class KnapsackAlgorithm {
     
     public function findOneCollection()
     {
+        $stmt = $pdo->prepare("CALL `get30products`(@p0, @p1); SELECT @p0 AS `str`, @p1 AS `remainingPrice`;");
+        $stmt->execute();
+        $result1 = $stmt->fetch(PDO::FETCH_ASSOC);
+        $remainingPrice = $result1['remainingPrice'];
+        $stmt = $pdo->prepare("CALL `findProductWithExactPrice`(?, @p1); SELECT @p1 AS `productId`;");
+        $stmt->execute([$remainingPrice]);
+        $result2 = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($result['productId'] == 0) {
+            throw new Exception('Not found');
+        }
+        return $result1['str'] . ',' . $result2['productId'];
     }
     
     public function findMultipleCollections($total)
