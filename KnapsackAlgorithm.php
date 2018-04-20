@@ -33,7 +33,7 @@ class KnapsackAlgorithm {
     
     public function findOneCollection()
     {
-        $stmt = $pdo->prepare("CALL `get30products`(@p0, @p1); SELECT @p0 AS `str`, @p1 AS `remainingPrice`;");
+        $stmt = $this->pdo->prepare("CALL `get30products`(@p0, @p1); SELECT @p0 AS `str`, @p1 AS `remainingPrice`;");
         $stmt->execute();
         $result1 = $stmt->fetch(PDO::FETCH_ASSOC);
         $remainingPrice = $result1['remainingPrice'];
@@ -46,7 +46,7 @@ class KnapsackAlgorithm {
         return $result1['str'] . ',' . $result2['productId'];
     }
     
-    public function findMultipleCollections($total)
+    public function findMultipleCollections($total = 10)
     {
         $collections = [];
         for($i = 0; $i < $total; $i++) {
@@ -59,7 +59,23 @@ class KnapsackAlgorithm {
         return $collections;
     }
     
-    public function findAndSaveCollections()
+    public function findAndSaveCollections($total = 10)
     {
+        $collections = $this->findMultipleCollections($total);
+        foreach($collections as $collection) {
+            $items = explode(',', $collection);
+            $this->insertToResults($collection, count($items), 500);
+        }
+    }
+        
+    protected function insertToResults($collection, $totalItems, $price)
+    {
+        $statement = $this->pdo->prepare("INSERT INTO results(totalItems, totalPrice, items)
+             VALUES(:totalItems, :totalPrice, :items)");
+        $statement->execute(array(
+            "totalItems" => $totalItems,
+            "totalPrice" => $price,
+            "items" => $collection
+        ));
     }
 }
