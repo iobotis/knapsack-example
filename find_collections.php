@@ -1,6 +1,7 @@
 <?php
 
 require_once('pdo_config.php');
+require_once('KnapsackAlgorithm.php');
 
 echo "Please choose: \n";
 echo "1. Find exact collections.\n";
@@ -10,26 +11,15 @@ echo "Type 1 or 2.\n";
 $handle = fopen("php://stdin", "r");
 $option = intval(fgets($handle));
 
-$stmt = $pdo->prepare("CALL `get30products`(@p0, @p1); SELECT @p0 AS `str`, @p1 AS `remainingPrice`;");
-
-$stmt->execute();
-
-$result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$remainingPrice = $result['remainingPrice'];
+$knapsackAlgo = new KnapsackAlgorithm($pdo);
 
 if($option == 1) {
-    $stmt = $pdo->prepare("CALL `findProductWithExactPrice`(?, @p1); SELECT @p0 AS `str`, @p1 AS `productId`;");
-
-    $stmt->execute([$remainingPrice]);
-
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if($result['productId'] == 0) {
-        echo "Not Found collection\n";
+    try {
+        $result = $knapsackAlgo->findOneCollection();
+        echo 'Found collection of ' . $result . "\n";
     }
-    else {
-        echo 'Found collection of ' . $result['str'] . ',' . $result['productId'] . "\n";
+    catch(Exception $e) {
+        echo "Not Found collection\n";
     }
 }
 elseif($option == 2) {
