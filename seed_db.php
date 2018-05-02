@@ -1,12 +1,20 @@
 <?php
 
 require_once('pdo_config.php');
+require_once('KnapsackAlgorithm.php');
 
-$total = intval($argv[1]);
-$minPrice = intval($argv[2]);
-$maxPrice = intval($argv[3]);
+echo "How many products to add?\n";
+$handle = fopen("php://stdin", "r");
+$total = intval(fgets($handle));
 
-$stmt = $pdo->prepare("SET @p0=?; SET @p1=?; SET @p2=?; CALL `InsertRand`(@p0, @p1, @p2);");
-$stmt->execute([$total,$minPrice,$maxPrice]);
-$addedProductsTotal = $stmt->rowCount();
+echo "Max price?\n";
+$handle = fopen("php://stdin", "r");
+$maxPrice = intval(fgets($handle));
+
+$minPrice = 0;
+
+$knapsackAlgo = new KnapsackAlgorithm($pdo);
+
+$addedProductsTotal = $knapsackAlgo->seedDb($total,$minPrice,$maxPrice);
+
 echo "Successfully added " . $addedProductsTotal . " products, with price range " . $minPrice . "-" . $maxPrice;
