@@ -73,6 +73,18 @@ class KnapsackAlgorithm {
             $this->insertToResults($collection, count($items), 500);
         }
     }
+
+    public function seedDb($total, $minPrice, $maxPrice)
+    {
+        $stmt = $this->pdo->prepare("CALL `InsertRand`(:total, :minPrice, :maxPrice);");
+
+        $stmt->bindParam(':total', $total);
+        $stmt->bindParam(':minPrice', $minPrice);
+        $stmt->bindParam(':maxPrice', $maxPrice);
+        $stmt->execute();
+        $stmt->closeCursor();
+        return $total;
+    }
         
     protected function insertToResults($collection, $totalItems, $price)
     {
