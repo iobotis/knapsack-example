@@ -20,14 +20,19 @@ class UpperLimitCollectionAlgorithm {
     
     public function findOneCollection()
     {
-        $stmt = $this->pdo->prepare("CALL `get30products`(@p0, @p1); SELECT @p0 AS `str`, @p1 AS `remainingPrice`;");
+        $stmt = $this->pdo->prepare("CALL `get30products`(@products, @remainingPrice);");
         $stmt->execute();
-        $result1 = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        $result1 = $this->pdo
+            ->query("SELECT @products AS `str`, @remainingPrice AS `remainingPrice`;")
+            ->fetch(PDO::FETCH_ASSOC);
         $remainingPrice = $result1['remainingPrice'];
-        $stmt = $pdo->prepare("CALL `findProductClosestToPrice`(?, @p1); SELECT @p1 AS `productId`;");
+        $stmt = $this->pdo->prepare("CALL `findProductClosestToPrice`(?, @productId);");
         $stmt->execute([$remainingPrice]);
-        $result2 = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($result['productId'] == 0) {
+        $result2 = $this->pdo
+            ->query("SELECT @productId AS `productId`;")
+            ->fetch(PDO::FETCH_ASSOC);
+        if($result2['productId'] == 0) {
             throw new Exception('Not found');
         }
         return $result1['str'] . ',' . $result2['productId'];
