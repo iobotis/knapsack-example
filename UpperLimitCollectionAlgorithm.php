@@ -1,6 +1,9 @@
 <?php
+require_once('InstallSQLTrait.php');
 
 class UpperLimitCollectionAlgorithm {
+
+    use InstallSQLTrait;
 
     private $pdo;
     private $table = 'products';
@@ -8,14 +11,7 @@ class UpperLimitCollectionAlgorithm {
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
-    }
-    
-    public function install()
-    {
-        if(!$this->isInstalled()) {
-            $sql = file_get_contents('file.sql');
-            $this->pdo->exec($sql);
-        }
+        $this->setPdo($pdo);
     }
     
     public function findOneCollection()
