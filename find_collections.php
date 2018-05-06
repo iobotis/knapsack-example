@@ -30,13 +30,18 @@ elseif($option == 1) {
     }
 }
 elseif($option == 2) {
-    $stmt = $pdo->prepare("CALL `findProductClosestToPrice`(?, @p1); SELECT @p0 AS `str`, @p1 AS `productId`;");
+    require_once('UpperLimitCollectionAlgorithm.php');
 
-    $stmt->execute([$remainingPrice]);
+    $knapsackAlgo = new UpperLimitCollectionAlgorithm($pdo);
 
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    echo 'Found collection of ' . $result['str'] . ',' . $result['productId'] . "\n";
+    try {
+        $result = $knapsackAlgo->findOneCollection();
+        echo 'Found collection of ' . $result . "\n";
+    }
+    catch(Exception $e) {
+        echo $e->getMessage();
+        echo "Not Found collection\n";
+    }
 }
 
 
