@@ -1,9 +1,13 @@
 <?php
 require_once('InstallSQLTrait.php');
+require_once('SaveResultTrait.php');
 
 class KnapsackAlgorithm {
 
     use InstallSQLTrait;
+    use SaveResultTrait {
+        setPdo as protected setPdoForSaveResultTrait;
+    }
 
     private $pdo;
     private $table = 'products';
@@ -12,6 +16,7 @@ class KnapsackAlgorithm {
     {
         $this->pdo = $pdo;
         $this->setPdo($pdo);
+        $this->setPdoForSaveResultTrait($pdo);
     }
     
     public function findOneCollection()
@@ -68,15 +73,5 @@ class KnapsackAlgorithm {
         $stmt->closeCursor();
         return $total;
     }
-        
-    protected function insertToResults($collection, $totalItems, $price)
-    {
-        $statement = $this->pdo->prepare("INSERT INTO results(totalItems, totalPrice, items)
-             VALUES(:totalItems, :totalPrice, :items)");
-        $statement->execute(array(
-            "totalItems" => $totalItems,
-            "totalPrice" => $price,
-            "items" => $collection
-        ));
-    }
+    
 }
