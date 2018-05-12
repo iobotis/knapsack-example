@@ -8,6 +8,7 @@ class KnapsackAlgorithm {
         InstallSQLTrait::setPdo as protected setPdoForInstallSQLTrait;
     }
     use SaveResultTrait {
+        InstallSQLTrait::setPdo insteadof SaveResultTrait;
         SaveResultTrait::setPdo as protected setPdoForSaveResultTrait;
     }
 
