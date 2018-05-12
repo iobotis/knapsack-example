@@ -5,10 +5,10 @@ require_once('SaveResultTrait.php');
 class KnapsackAlgorithm {
 
     use InstallSQLTrait {
-        setPdo as protected setPdoForInstallSQLTrait;
+        InstallSQLTrait::setPdo as protected setPdoForInstallSQLTrait;
     }
     use SaveResultTrait {
-        setPdo as protected setPdoForSaveResultTrait;
+        SaveResultTrait::setPdo as protected setPdoForSaveResultTrait;
     }
 
     private $pdo;
