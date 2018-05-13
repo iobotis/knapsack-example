@@ -11,6 +11,10 @@ class KnapsackAlgorithm {
         InstallSQLTrait::setPdo insteadof SaveResultTrait;
         SaveResultTrait::setPdo as protected setPdoForSaveResultTrait;
     }
+    
+    use SeedDbTrait {
+        SeedDbTrait::setPdo as protected setPdoForSeedDbTrait;
+    }
 
     private $pdo;
     private $table = 'products';
@@ -20,6 +24,7 @@ class KnapsackAlgorithm {
         $this->pdo = $pdo;
         $this->setPdoForInstallSQLTrait($pdo);
         $this->setPdoForSaveResultTrait($pdo);
+        $this->setPdoForSeedDbTrait($pdo);
     }
     
     public function findOneCollection()
@@ -65,16 +70,4 @@ class KnapsackAlgorithm {
         }
     }
 
-    public function seedDb($total, $minPrice, $maxPrice)
-    {
-        $stmt = $this->pdo->prepare("CALL `InsertRand`(:total, :minPrice, :maxPrice);");
-
-        $stmt->bindParam(':total', $total);
-        $stmt->bindParam(':minPrice', $minPrice);
-        $stmt->bindParam(':maxPrice', $maxPrice);
-        $stmt->execute();
-        $stmt->closeCursor();
-        return $total;
-    }
-    
 }
