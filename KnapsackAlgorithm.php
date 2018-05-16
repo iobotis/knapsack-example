@@ -1,6 +1,7 @@
 <?php
 require_once('InstallSQLTrait.php');
 require_once('SaveResultTrait.php');
+require_once('SeedDbTrait.php');
 
 class KnapsackAlgorithm {
 
