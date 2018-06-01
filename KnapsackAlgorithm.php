@@ -20,7 +20,7 @@ class KnapsackAlgorithm {
     private $pdo;
     private $table = 'products';
     
-    public function __construct(PDO $pdo)
+    public function __construct(PDO $pdo, Config $config)
     {
         $this->pdo = $pdo;
         $this->setPdoForInstallSQLTrait($pdo);
