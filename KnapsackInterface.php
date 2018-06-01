@@ -9,7 +9,7 @@
 interface KnapsackInterface
 {
 
-    public function __construct(PDO $pdo);
+    public function __construct(PDO $pdo, Config $config);
 
     public function findOneCollection();
 

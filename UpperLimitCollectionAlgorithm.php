@@ -8,7 +8,7 @@ class UpperLimitCollectionAlgorithm {
     private $pdo;
     private $table = 'products';
     
-    public function __construct(PDO $pdo)
+    public function __construct(PDO $pdo, Config $config)
     {
         $this->pdo = $pdo;
         $this->setPdo($pdo);
