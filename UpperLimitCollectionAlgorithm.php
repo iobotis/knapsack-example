@@ -1,7 +1,9 @@
 <?php
+require_once('Config.php');
+require_once('KnapsackInterface.php');
 require_once('InstallSQLTrait.php');
 
-class UpperLimitCollectionAlgorithm {
+class UpperLimitCollectionAlgorithm implements KnapsackInterface {
 
     use InstallSQLTrait;
 
