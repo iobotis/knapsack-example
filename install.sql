@@ -1,4 +1,4 @@
-CREATE TABLE `products` (
+CREATE TABLE `%items%` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` varchar(255) NOT NULL,
  `price` decimal(6,2) NOT NULL DEFAULT '0.00',
@@ -21,7 +21,7 @@ BEGIN
     START TRANSACTION;
     WHILE i <= NumRows DO
         SET price = MinVal + CEIL(RAND() * (MaxVal - MinVal));
-        INSERT INTO products(name, price) VALUES ('product', price);
+        INSERT INTO %items%(name, price) VALUES ('product', price);
         SET i = i + 1;
     END WHILE;
     COMMIT;
@@ -31,7 +31,7 @@ CREATE PROCEDURE `getRandomProduct`(IN `maxPrice` DECIMAL(8,2), OUT `productId` 
 BEGIN
    SET productId = 0;
        SELECT id, price INTO productId, productPrice
-       FROM products
+       FROM %items%
        WHERE price < maxPrice
        ORDER BY RAND()
        LIMIT 1;
@@ -42,7 +42,7 @@ CREATE PROCEDURE `findProductWithExactPrice`(IN `exactPrice` DECIMAL(8,2), OUT `
 BEGIN
   SET productId = 0;
   SELECT id INTO productId 
-  FROM products 
+  FROM %items% 
   WHERE price = exactPrice
   ORDER BY RAND()
   LIMIT 1;
@@ -53,7 +53,7 @@ CREATE PROCEDURE `findProductClosestToPrice`(IN `priceLimit` DECIMAL(8,2), OUT `
 BEGIN
 	SET productId = 0;
 	SELECT id INTO productId 
-	FROM products 
+	FROM %items% 
 	WHERE price <= priceLimit
 	ORDER BY price DESC
 	LIMIT 1;
