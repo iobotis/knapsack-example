@@ -1,9 +1,11 @@
 <?php
+require_once('Config.php');
+require_once('KnapsackInterface.php');
 require_once('InstallSQLTrait.php');
 require_once('SaveResultTrait.php');
 require_once('SeedDbTrait.php');
 
-class KnapsackAlgorithm {
+class KnapsackAlgorithm implements KnapsackInterface {
 
     use InstallSQLTrait {
         InstallSQLTrait::setPdo as protected setPdoForInstallSQLTrait;
