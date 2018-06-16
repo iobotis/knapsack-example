@@ -3,16 +3,24 @@
 trait InstallSQLTrait {
 
     private $pdo;
+    
+    private $tableName;
 
     protected function setPdo(PDO $pdo)
     {
         $this->pdo = $pdo;
+    }
+    
+    public function setTableName($name)
+    {
+        $this->tableName = $name;
     }
 
     public function install()
     {
         if(!$this->isInstalled()) {
             $sql = file_get_contents('install.sql');
+            $sql = str_replace("%items%", $this->tableName, $sql);
             $this->pdo->exec($sql);
         }
     }

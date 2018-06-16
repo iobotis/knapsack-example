@@ -26,6 +26,7 @@ class KnapsackAlgorithm implements KnapsackInterface {
     {
         $this->pdo = $pdo;
         $this->setPdoForInstallSQLTrait($pdo);
+        $this->setTableName($config->tableName);
         $this->setPdoForSaveResultTrait($pdo);
         $this->setPdoForSeedDbTrait($pdo);
     }
