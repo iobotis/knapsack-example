@@ -6,7 +6,7 @@ trait SeedDbTrait {
 
     private $pdo;
     
-    protected function setPdo(PDO $pdo)
+    protected function setPdo(\PDO $pdo)
     {
         $this->pdo = $pdo;
     }

@@ -19,13 +19,14 @@ class ExactCollections implements KnapsackInterface {
     }
     
     use SeedDbTrait {
+        InstallSQLTrait::setPdo insteadof SeedDbTrait;
         SeedDbTrait::setPdo as protected setPdoForSeedDbTrait;
     }
 
     private $pdo;
     private $table = 'products';
     
-    public function __construct(PDO $pdo, Config $config)
+    public function __construct(\PDO $pdo, Config $config)
     {
         $this->pdo = $pdo;
         $this->setPdoForInstallSQLTrait($pdo);
@@ -42,15 +43,15 @@ class ExactCollections implements KnapsackInterface {
 
         $result1 = $this->pdo
             ->query("SELECT @products AS `str`, @remainingPrice AS `remainingPrice`;")
-            ->fetch(PDO::FETCH_ASSOC);
+            ->fetch(\PDO::FETCH_ASSOC);
         $remainingPrice = $result1['remainingPrice'];
         $stmt = $this->pdo->prepare("CALL `findProductWithExactPrice`(?, @productId);");
         $stmt->execute([$remainingPrice]);
         $result2 = $this->pdo
             ->query("SELECT @productId AS `productId`;")
-            ->fetch(PDO::FETCH_ASSOC);
+            ->fetch(\PDO::FETCH_ASSOC);
         if($result2['productId'] == 0) {
-            throw new Exception('Not found');
+            throw new \Exception('Not found');
         }
         return $result1['str'] . ',' . $result2['productId'];
     }
@@ -62,7 +63,7 @@ class ExactCollections implements KnapsackInterface {
             try {
                 $collections[] = $this->findOneCollection();
             }
-            catch(Exception $e) {
+            catch(\Exception $e) {
             }
         }
         return $collections;

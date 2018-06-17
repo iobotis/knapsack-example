@@ -5,7 +5,7 @@ namespace Knapsack\Traits;
 trait SaveResultTrait {
 
     private $pdo;
-    protected function setPdo(PDO $pdo)
+    protected function setPdo(\PDO $pdo)
     {
         $this->pdo = $pdo;
     }

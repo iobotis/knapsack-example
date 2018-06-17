@@ -36,7 +36,7 @@ class UpperLimitCollections implements KnapsackInterface {
             ->query("SELECT @productId AS `productId`;")
             ->fetch(PDO::FETCH_ASSOC);
         if($result2['productId'] == 0) {
-            throw new Exception('Not found');
+            throw new \Exception('Not found');
         }
         return $result1['str'] . ',' . $result2['productId'];
     }
@@ -48,7 +48,7 @@ class UpperLimitCollections implements KnapsackInterface {
             try {
                 $collections[] = $this->findOneCollection();
             }
-            catch(Exception $e) {
+            catch(\Exception $e) {
             }
         }
         return $collections;

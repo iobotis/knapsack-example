@@ -7,6 +7,6 @@
     }
   ],
   "autoload": {
-    "psr-4": {"Knapsack\\": "src/"}
+    "psr-4": {"Knapsack\\": "src/Knapsack"}
   }
 }
