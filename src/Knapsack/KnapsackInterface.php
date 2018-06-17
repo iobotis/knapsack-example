@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: user
- * Date: 1/6/2018
- * Time: 7:52 μμ
- */
+
+namespace Knapsack;
 
 interface KnapsackInterface
 {

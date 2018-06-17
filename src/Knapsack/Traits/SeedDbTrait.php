@@ -1,5 +1,7 @@
 <?php
 
+namespace Knapsack\Traits;
+
 trait SeedDbTrait {
 
     private $pdo;

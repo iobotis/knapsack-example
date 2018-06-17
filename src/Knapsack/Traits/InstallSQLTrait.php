@@ -1,5 +1,7 @@
 <?php
 
+namespace Knapsack\Traits;
+
 trait InstallSQLTrait {
 
     private $pdo;

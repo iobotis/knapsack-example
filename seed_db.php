@@ -1,7 +1,8 @@
 <?php
 
+use Knapsack\ExactCollections;
+
 require_once('pdo_config.php');
-require_once('KnapsackAlgorithm.php');
 
 echo "How many products to add?\n";
 $handle = fopen("php://stdin", "r");
@@ -13,7 +14,10 @@ $maxPrice = intval(fgets($handle));
 
 $minPrice = 0;
 
-$knapsackAlgo = new KnapsackAlgorithm($pdo);
+$config = new Config();
+$config->tableName = $table;
+
+$knapsackAlgo = new ExactCollections($pdo, $config);
 
 $addedProductsTotal = $knapsackAlgo->seedDb($total,$minPrice,$maxPrice);
 

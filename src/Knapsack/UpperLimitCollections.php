@@ -1,23 +1,16 @@
 <?php
-require_once('Config.php');
-require_once('KnapsackInterface.php');
-require_once('InstallSQLTrait.php');
-require_once('SaveResultTrait.php');
-require_once('SeedDbTrait.php');
 
-class KnapsackAlgorithm implements KnapsackInterface {
+namespace Knapsack;
 
-    use InstallSQLTrait {
-        InstallSQLTrait::setPdo as protected setPdoForInstallSQLTrait;
-    }
-    use SaveResultTrait {
-        InstallSQLTrait::setPdo insteadof SaveResultTrait;
-        SaveResultTrait::setPdo as protected setPdoForSaveResultTrait;
-    }
-    
-    use SeedDbTrait {
-        SeedDbTrait::setPdo as protected setPdoForSeedDbTrait;
-    }
+use Knapsack\Config;
+use Knapsack\KnapsackInterface;
+use Knapsack\Traits\InstallSQLTrait;
+use Knapsack\Traits\SaveResultTrait;
+use Knapsack\Traits\SeedDbTrait;
+
+class UpperLimitCollections implements KnapsackInterface {
+
+    use InstallSQLTrait;
 
     private $pdo;
     private $table = 'products';
@@ -25,10 +18,7 @@ class KnapsackAlgorithm implements KnapsackInterface {
     public function __construct(PDO $pdo, Config $config)
     {
         $this->pdo = $pdo;
-        $this->setPdoForInstallSQLTrait($pdo);
-        $this->setTableName($config->tableName);
-        $this->setPdoForSaveResultTrait($pdo);
-        $this->setPdoForSeedDbTrait($pdo);
+        $this->setPdo($pdo);
     }
     
     public function findOneCollection()
@@ -36,12 +26,11 @@ class KnapsackAlgorithm implements KnapsackInterface {
         $stmt = $this->pdo->prepare("CALL `get30products`(@products, @remainingPrice);");
         $stmt->execute();
         $stmt->closeCursor();
-
         $result1 = $this->pdo
             ->query("SELECT @products AS `str`, @remainingPrice AS `remainingPrice`;")
             ->fetch(PDO::FETCH_ASSOC);
         $remainingPrice = $result1['remainingPrice'];
-        $stmt = $this->pdo->prepare("CALL `findProductWithExactPrice`(?, @productId);");
+        $stmt = $this->pdo->prepare("CALL `findProductClosestToPrice`(?, @productId);");
         $stmt->execute([$remainingPrice]);
         $result2 = $this->pdo
             ->query("SELECT @productId AS `productId`;")
@@ -64,14 +53,9 @@ class KnapsackAlgorithm implements KnapsackInterface {
         }
         return $collections;
     }
-    
+
     public function findAndSaveCollections($total = 10)
     {
-        $collections = $this->findMultipleCollections($total);
-        foreach($collections as $collection) {
-            $items = explode(',', $collection);
-            $this->insertToResults($collection, count($items), 500);
-        }
+        // TODO: Implement findAndSaveCollections() method.
     }
-
 }
