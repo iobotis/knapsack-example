@@ -2,10 +2,12 @@
 
 namespace Knapsack;
 
+use Knapsack\Config;
+
 interface KnapsackInterface
 {
 
-    public function __construct(PDO $pdo, Config $config);
+    public function __construct(\PDO $pdo, Config $config);
 
     public function findOneCollection();
 

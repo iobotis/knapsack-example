@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use Knapsack\ExactCollections;
 use Knapsack\Config;
 use Knapsack\UpperLimitCollections;
@@ -15,11 +17,15 @@ echo "Please choose: \n";
 if(!$knapsackAlgo->isInstalled()) {
     echo "Import install script?(y\/n)\n";
     $handle = fopen("php://stdin", "r");
-    $option = intval(fgets($handle));
+    $option = trim(fgets($handle));
     if($option !== 'y') {
+        echo $option;
         return;
     }
-    $knapsackAlgo->install();
+    $success = $knapsackAlgo->install();
+    if($success === false) {
+        var_dump($knapsackAlgo->getError());
+    }
 }
 echo "1. Find exact collections.\n";
 echo "2. Find close upper limit collections.\n";

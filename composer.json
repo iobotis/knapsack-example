@@ -1,0 +1,12 @@
+{
+  "name": "iobotis/knapsack-example",
+  "description": "This is a simple example of a knapsack implementation.",
+  "authors": [
+    {
+      "name": "Ioannis Botis"
+    }
+  ],
+  "autoload": {
+    "psr-4": {"Knapsack\\": "src/Knapsack"}
+  }
+}
