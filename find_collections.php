@@ -1,9 +1,15 @@
 <?php
 
-require_once('pdo_config.php');
-require_once('KnapsackAlgorithm.php');
+use Knapsack\ExactCollections;
+use Knapsack\Config;
+use Knapsack\UpperLimitCollections;
 
-$knapsackAlgo = new KnapsackAlgorithm($pdo);
+require_once('pdo_config.php');
+
+$config = new Config();
+$config->tableName = $table;
+
+$knapsackAlgo = new ExactCollections($pdo, $config);
 
 echo "Please choose: \n";
 if(!$knapsackAlgo->isInstalled()) {
@@ -33,9 +39,8 @@ if($option == 1) {
     }
 }
 elseif($option == 2) {
-    require_once('UpperLimitCollectionAlgorithm.php');
 
-    $knapsackAlgo = new UpperLimitCollectionAlgorithm($pdo);
+    $knapsackAlgo = new UpperLimitCollections($pdo, $config);
 
     try {
         $result = $knapsackAlgo->findOneCollection();

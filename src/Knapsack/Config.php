@@ -1,5 +1,6 @@
 <?php
 
+namespace Knapsack;
 
 class Config
 {

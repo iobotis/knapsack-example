@@ -13,7 +13,7 @@ $maxPrice = intval(fgets($handle));
 
 $minPrice = 0;
 
-$knapsackAlgo = new KnapsackAlgorithm($pdo);
+$knapsackAlgo = new ExactCollections($pdo);
 
 $addedProductsTotal = $knapsackAlgo->seedDb($total,$minPrice,$maxPrice);
 
