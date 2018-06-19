@@ -22,6 +22,7 @@ if(!$knapsackAlgo->isInstalled()) {
         echo $option;
         return;
     }
+    $knapsackAlgo->setInstallScript(__DIR__. '/../install.sql');
     $success = $knapsackAlgo->install();
     if($success === false) {
         var_dump($knapsackAlgo->getError());

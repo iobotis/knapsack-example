@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use Knapsack\Config;
 use Knapsack\ExactCollections;
 
 require_once('pdo_config.php');
