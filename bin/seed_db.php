@@ -23,4 +23,4 @@ $knapsackAlgo = new ExactCollections($pdo, $config);
 
 $addedProductsTotal = $knapsackAlgo->seedDb($total,$minPrice,$maxPrice);
 
-echo "Successfully added " . $addedProductsTotal . " products, with price range " . $minPrice . "-" . $maxPrice;
+echo "Successfully added " . $addedProductsTotal . " products, with price range " . $minPrice . "-" . $maxPrice ."\n";

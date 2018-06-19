@@ -2,15 +2,34 @@
 
 namespace Knapsack\Traits;
 
+use Knapsack\Config;
+
 trait SeedDbTrait {
 
     private $pdo;
-    
+
+    /**
+     * @var Config
+     */
+    private $config;
+
     protected function setPdo(\PDO $pdo)
     {
         $this->pdo = $pdo;
     }
-    
+
+    public function setConfig(Config $config)
+    {
+        $this->config = $config;
+    }
+
+    public function isItemsEmpty()
+    {
+        $result = $this->pdo->query("SELECT count(*) FROM " . $this->config->tableName);
+        $result->execute();
+        return $result->fetchColumn();
+    }
+
     public function seedDb($total, $minPrice, $maxPrice)
     {
         $stmt = $this->pdo->prepare("CALL `InsertRand`(:total, :minPrice, :maxPrice);");
