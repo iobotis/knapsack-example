@@ -41,7 +41,7 @@ if($option == 1) {
         echo 'Found collection of ' . $result . "\n";
     }
     catch(Exception $e) {
-        echo $e->getMessage();
+        //echo $e->getMessage();
         echo "Not Found collection\n";
     }
 }

@@ -12,6 +12,7 @@ class ExactCollections implements KnapsackInterface {
 
     use InstallSQLTrait {
         InstallSQLTrait::setPdo as protected setPdoForInstallSQLTrait;
+        InstallSQLTrait::setConfig as protected setConfigForInstallSQLTrait;
     }
     use SaveResultTrait {
         InstallSQLTrait::setPdo insteadof SaveResultTrait;
@@ -20,29 +21,31 @@ class ExactCollections implements KnapsackInterface {
     
     use SeedDbTrait {
         InstallSQLTrait::setPdo insteadof SeedDbTrait;
+        InstallSQLTrait::setConfig insteadof SeedDbTrait;
         SeedDbTrait::setPdo as protected setPdoForSeedDbTrait;
+        SeedDbTrait::setConfig as protected setConfigForSeedDbTrait;
     }
 
     private $pdo;
-    private $table = 'products';
-    
+
     public function __construct(\PDO $pdo, Config $config)
     {
         $this->pdo = $pdo;
         $this->setPdoForInstallSQLTrait($pdo);
-        $this->setTableName($config->tableName);
         $this->setPdoForSaveResultTrait($pdo);
         $this->setPdoForSeedDbTrait($pdo);
+        $this->setConfigForInstallSQLTrait($config);
+        $this->setConfigForSeedDbTrait($config);
     }
     
     public function findOneCollection()
     {
-        $stmt = $this->pdo->prepare("CALL `get30products`(@products, @remainingPrice);");
+        $stmt = $this->pdo->prepare("CALL `get30products`(@items, @remainingPrice);");
         $stmt->execute();
         $stmt->closeCursor();
 
         $result1 = $this->pdo
-            ->query("SELECT @products AS `str`, @remainingPrice AS `remainingPrice`;")
+            ->query("SELECT @items AS `str`, @remainingPrice AS `remainingPrice`;")
             ->fetch(\PDO::FETCH_ASSOC);
         $remainingPrice = $result1['remainingPrice'];
         $stmt = $this->pdo->prepare("CALL `findProductWithExactPrice`(?, @productId);");
