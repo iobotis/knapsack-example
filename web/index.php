@@ -5,15 +5,37 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Knapsack\ExactCollections;
 use Knapsack\Config;
 use Knapsack\UpperLimitCollections;
+use Knapsack\Statistics;
 
 require_once('pdo_config.php');
 
 $config = new Config();
 $config->tableName = $table;
 
+$statistics = new Statistics($pdo, $config);
 $knapsackAlgo = new ExactCollections($pdo, $config);
 
 $totalItems = $knapsackAlgo->getTotalItems();
+
+const TABLE_STEP = 50;
+$tableRange = range(TABLE_STEP, 500, TABLE_STEP);
+$tableRangeValues = array();
+foreach ($tableRange as $max) {
+    $tableRangeValues[$max] = $statistics->getTotalItemsInRange($max - TABLE_STEP, $max);
+}
+$chartStep = 25;
+$chartRange = range($chartStep, 500, $chartStep);
+$chartRangeValues = array();
+foreach ($chartRange as $max) {
+    $chartRangeValues[] = $statistics->getTotalItemsInRange($max - $chartStep, $max);
+}
+$chartRangeLabels = array_map(function ($value) use ($chartStep) {
+    return ($value - $chartStep). '-' . $value;
+}, $chartRange);
+
+$randomColors = array_map(function ($value) {
+    return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+}, $chartRange);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +63,7 @@ $totalItems = $knapsackAlgo->getTotalItems();
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <h1 class="h2"><?php echo $totalItems; ?> total items</h1>
-                <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+                <canvas class="my-4 w-100" id="bar-chart" width="900" height="380"></canvas>
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
                         <thead>
@@ -53,33 +75,18 @@ $totalItems = $knapsackAlgo->getTotalItems();
                         </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>0-10</td>
-                                <td>10</td>
-                                <td>5</td>
-                                <td>19</td>
-                            </tr>
-                            <tr>
-                                <td>10-20</td>
-                                <td>15</td>
-                                <td>consectetur</td>
-                                <td>adipiscing</td>
-                            </tr>
-                            <tr>
-                                <td>20-30</td>
-                                <td>4</td>
-                                <td>nec</td>
-                                <td>odio</td>
-                            </tr>
-                            <tr>
-                                <td>30-40</td>
-                                <td>7</td>
-                                <td>Sed</td>
-                                <td>cursus</td>
-                            </tr>
+                            <?php foreach ($tableRangeValues as $max => $total): ?>
+                                <tr>
+                                    <td><?php echo $max - TABLE_STEP; ?>-<?php echo $max; ?></td>
+                                    <td><?php echo $total; ?></td>
+                                    <td>5</td>
+                                    <td>19</td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
+                <canvas class="my-4 w-100" id="doughnut-chart" width="900" height="380"></canvas>
             </main>
         </div>
         <table>
@@ -94,13 +101,13 @@ $totalItems = $knapsackAlgo->getTotalItems();
         </table>
     </div>
     <script>
-        var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
-            type: 'line',
+        var ctx = document.getElementById("bar-chart");
+        var barChart = new Chart(ctx, {
+            type: 'bar',
             data: {
-                labels: ["0-100", "100-200", "200-300", "300-400", "400-500"],
+                labels: <?php echo json_encode($chartRangeLabels); ?>,
                 datasets: [{
-                    data: [30, 40, 45, 20, 17, 19, 32],
+                    data: <?php echo json_encode($chartRangeValues); ?>,
                     lineTension: 0,
                     backgroundColor: 'transparent',
                     borderColor: '#007bff',
@@ -112,12 +119,34 @@ $totalItems = $knapsackAlgo->getTotalItems();
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: false
+                            beginAtZero: true
                         }
                     }]
                 },
                 legend: {
                     display: false,
+                }
+            }
+        });
+        var ctx = document.getElementById("doughnut-chart");
+        var doughnutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: <?php echo json_encode($chartRangeLabels); ?>,
+                datasets: [{
+                    data: <?php echo json_encode($chartRangeValues); ?>,
+                    lineTension: 0,
+                    backgroundColor: <?php echo json_encode($randomColors); ?>,
+                    //backgroundColor: 'transparent',
+                    borderColor: '#007bff',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#007bff'
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Items distribution.'
                 }
             }
         });
