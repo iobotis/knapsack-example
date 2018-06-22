@@ -63,7 +63,10 @@ $randomColors = array_map(function ($value) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Collections</a>
+                            <a class="nav-link" id="find-collections-tab" data-toggle="tab" href="#find-collections" role="tab" aria-controls="find-collections" aria-selected="false">Find Collections</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="install-tab" data-toggle="tab" href="#install" role="tab" aria-controls="install" aria-selected="false">Install & Seed</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Saved Collections</a>
@@ -110,8 +113,10 @@ $randomColors = array_map(function ($value) {
                         </div>
                         <canvas class="my-4 w-100" id="doughnut-chart" width="900" height="380"></canvas>
                     </div>
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+                    <div class="tab-pane fade" id="find-collections" role="tabpanel" aria-labelledby="find-collections-tab">
+
+                    </div>
+                    <div class="tab-pane fade" id="install" role="tabpanel" aria-labelledby="install-tab">...</div>
                 </div>
 
             </main>
