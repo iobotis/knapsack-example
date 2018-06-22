@@ -21,6 +21,7 @@ $totalItems = $knapsackAlgo->getTotalItems();
     <meta charset="UTF-8">
     <title>Knapsack implementation</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 </head>
 <body>
     <h1>Knapsack</h1>
@@ -40,6 +41,7 @@ $totalItems = $knapsackAlgo->getTotalItems();
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <h1 class="h2"><?php echo $totalItems; ?> total items</h1>
+                <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
                         <thead>
@@ -91,5 +93,34 @@ $totalItems = $knapsackAlgo->getTotalItems();
             </tbody>
         </table>
     </div>
+    <script>
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["0-100", "100-200", "200-300", "300-400", "400-500"],
+                datasets: [{
+                    data: [30, 40, 45, 20, 17, 19, 32],
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#007bff',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#007bff'
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }]
+                },
+                legend: {
+                    display: false,
+                }
+            }
+        });
+    </script>
 </body>
 </html>
