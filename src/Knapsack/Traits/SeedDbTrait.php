@@ -6,6 +6,9 @@ use Knapsack\Config;
 
 trait SeedDbTrait {
 
+    /**
+     * @var \PDO
+     */
     private $pdo;
 
     /**
@@ -23,7 +26,7 @@ trait SeedDbTrait {
         $this->config = $config;
     }
 
-    public function isItemsEmpty()
+    public function getTotalItems()
     {
         $result = $this->pdo->query("SELECT count(*) FROM " . $this->config->tableName);
         $result->execute();
