@@ -153,6 +153,38 @@ $randomColors = array_map(function ($value) {
                                 Database should be empty!
                             </div>
                             <a role="button" class="btn btn-success" href="?install=1">Init Database(importing install.sql)</a>
+                        <?php else: ?>
+
+                            <form class="form">
+                                <input type="hidden" name="option" value="seed"/>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="seed-db-option1">Please select max price.</label>
+                                        <select name="price" class="form-control" id="seed-db-option1" required>
+                                            <option>100</option>
+                                            <option>200</option>
+                                            <option>300</option>
+                                            <option>400</option>
+                                            <option>500</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="seed-db-option2">How many items to add?</label>
+                                        <select name="total" class="form-control" id="seed-db-option2" required>
+                                            <option>10</option>
+                                            <option>100</option>
+                                            <option>500</option>
+                                            <option>2000</option>
+                                            <option>5000</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <button type="submit" class="btn btn-primary btn-lg" style="position: absolute;bottom: 0">Seed Db</button>
+                                    </div>
+                                </div>
+
+
+                            </form>
                         <?php endif; ?>
                     </div>
                 </div>
