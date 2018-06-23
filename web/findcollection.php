@@ -12,8 +12,8 @@ require_once('pdo_config.php');
 $config = new Config();
 $config->tableName = $table;
 
-$number = isset($_GET['number']) ? intval($_GET['number']): 1;
-$type = isset($_GET['type']) ? intval($_GET['type']): 1;
+$number = isset($_POST['number']) ? intval($_POST['number']): 1;
+$type = isset($_POST['type']) ? intval($_POST['type']): 1;
 
 $knapsackAlgo = new ExactCollections($pdo, $config);
 if($type === 2) {
@@ -61,33 +61,37 @@ foreach ($rowData as $collection) {
 <?php endif; ?>
 <div class="row">
 
-    <?php foreach ($rowData as $collection): ?>
+    <?php foreach ($rowData as $i => $collection): ?>
     <div class="col-sm-6">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Found collection of <?php echo count($collection['ids']); ?> items</h5>
                 <h6>Total price <?php echo array_pop($totalPrices); ?></h6>
                 <p class="card-text">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-sm">
-                            <thead>
-                            <tr>
-                                <th>Item Id</th>
-                                <th>Price</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($collection['ids'] as $id): ?>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapse-collection-<?php echo $i; ?>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        Show results
+                    </a>
+                    <div class="collapse" id="collapse-collection-<?php echo $i; ?>">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm">
+                                <thead>
                                 <tr>
-                                    <td><?php echo $id; ?></td>
-                                    <td><?php echo $collection['data'][$id]['price']; ?></td>
+                                    <th>Item Id</th>
+                                    <th>Price</th>
                                 </tr>
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($collection['ids'] as $id): ?>
+                                    <tr>
+                                        <td><?php echo $id; ?></td>
+                                        <td><?php echo $collection['data'][$id]['price']; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
         </div>
     </div>
