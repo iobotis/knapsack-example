@@ -44,13 +44,25 @@ class Statistics
 
     public function getTotalItemsInRange($min, $max)
     {
-        // @todo add where clause.
-        $result = $this->pdo->query(
+        $stmt = $this->pdo->prepare(
             "SELECT count(*) FROM " . $this->config->tableName
-            . " WHERE price >= '$min' AND price < '$max'"
+            . " WHERE price >= :min AND price < :max"
         );
-        $result->execute();
-        return $result->fetchColumn();
+        $stmt->bindParam(':min', $min);
+        $stmt->bindParam(':max', $max);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    public function getPricesForItems($items)
+    {
+        $qMarks = str_repeat('?,', count($items) - 1) . '?';
+        $stmt = $this->pdo->prepare(
+            "SELECT * FROM " . $this->config->tableName
+            . " WHERE id IN ($qMarks)"
+        );
+        $stmt->execute($items);
+        return $stmt->fetchAll(\PDO::FETCH_UNIQUE);
     }
 
     public function getError()
