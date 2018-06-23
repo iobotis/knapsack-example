@@ -71,10 +71,11 @@ $randomColors = array_map(function ($value) {
     <meta charset="UTF-8">
     <title>Knapsack implementation</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <h1>Knapsack</h1>
@@ -152,7 +153,37 @@ $randomColors = array_map(function ($value) {
                         <canvas class="my-4 w-100" id="doughnut-chart" width="900" height="380"></canvas>
                     </div>
                     <div class="tab-pane fade" id="find-collections" role="tabpanel" aria-labelledby="find-collections-tab">
+                        <hr/>
+                        <h2>Find collections <span class="badge badge-secondary">New</span></h2>
+                        <hr/>
+                        <form id="find-collection" action="findcollection.php" class="form">
+                            <input type="hidden" name="option" value="find"/>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="seed-db-option1">Collection type.</label>
+                                    <select name="type" class="form-control" id="seed-db-option1" required>
+                                        <option value="1">Exact</option>
+                                        <option value="2">Upper limit</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="seed-db-option4">How many collection to try to find?</label>
+                                    <select name="number" class="form-control" id="seed-db-option4" required>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>5</option>
+                                        <option>20</option>
+                                        <option>50</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <button type="submit" class="btn btn-primary btn-lg" style="position: absolute;bottom: 0">Find collection</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="collection-info">
 
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="install" role="tabpanel" aria-labelledby="install-tab">
                         <?php if(!$installed): ?>
@@ -161,7 +192,6 @@ $randomColors = array_map(function ($value) {
                             </div>
                             <a role="button" class="btn btn-success" href="?install=1">Init Database(importing install.sql)</a>
                         <?php else: ?>
-
                             <form class="form">
                                 <input type="hidden" name="option" value="seed"/>
                                 <div class="form-row">
@@ -199,8 +229,6 @@ $randomColors = array_map(function ($value) {
                                         <button type="submit" class="btn btn-primary btn-lg" style="position: absolute;bottom: 0">Seed Db</button>
                                     </div>
                                 </div>
-
-
                             </form>
                         <?php endif; ?>
                     </div>
