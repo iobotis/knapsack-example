@@ -15,24 +15,44 @@ $config->tableName = $table;
 $statistics = new Statistics($pdo, $config);
 $knapsackAlgo = new ExactCollections($pdo, $config);
 
-$totalItems = $knapsackAlgo->getTotalItems();
+$totalItems = 0;
+$tableRangeValues = array();
+$chartRangeValues = array();
 
 $step = isset($_GET['step']) ? intval($_GET['step']): 25;
 $tableStep = $step;
-$tableRange = range($tableStep, 500, $tableStep);
-$tableRangeValues = array();
-foreach ($tableRange as $max) {
-    $tableRangeValues[$max] = $statistics->getTotalItemsInRange($max - $tableStep, $max);
+
+$installed = $knapsackAlgo->isInstalled();
+
+if(!$installed) {
+    $shouldInstall = isset($_GET['install']) ? intval($_GET['install']): 0;
+    if($shouldInstall) {
+        $knapsackAlgo->setInstallScript(__DIR__. '/../install.sql');
+        $success = $knapsackAlgo->install();
+        header('Location: /', true, 301);
+        exit();
+    }
 }
-$chartStep = $step;
-$chartRange = range($chartStep, 500, $chartStep);
-$chartRangeValues = array();
-foreach ($chartRange as $max) {
-    $chartRangeValues[] = $statistics->getTotalItemsInRange($max - $chartStep, $max);
+
+if($installed) {
+
+    $totalItems = $knapsackAlgo->getTotalItems();
+
+    $tableRange = range($tableStep, 500, $tableStep);
+
+    foreach ($tableRange as $max) {
+        $tableRangeValues[$max] = $statistics->getTotalItemsInRange($max - $tableStep, $max);
+    }
+    $chartStep = $step;
+    $chartRange = range($chartStep, 500, $chartStep);
+
+    foreach ($chartRange as $max) {
+        $chartRangeValues[] = $statistics->getTotalItemsInRange($max - $chartStep, $max);
+    }
+    $chartRangeLabels = array_map(function ($value) use ($chartStep) {
+        return ($value - $chartStep) . '-' . $value;
+    }, $chartRange);
 }
-$chartRangeLabels = array_map(function ($value) use ($chartStep) {
-    return ($value - $chartStep). '-' . $value;
-}, $chartRange);
 
 $randomColors = array_map(function ($value) {
     return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
@@ -76,6 +96,17 @@ $randomColors = array_map(function ($value) {
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <h1 class="h2"><?php echo $totalItems; ?> total items</h1>
+                <?php if(!$installed): ?>
+                    <div class="alert alert-warning" role="alert">
+                        Please press install to initialize your database.
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-success nav-link" data-toggle="tab" href="#install" role="tab">Import options</button>
+                        </li>
+                    </ul>
+                    <hr/>
+                <?php endif; ?>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="dropdown">
@@ -116,7 +147,14 @@ $randomColors = array_map(function ($value) {
                     <div class="tab-pane fade" id="find-collections" role="tabpanel" aria-labelledby="find-collections-tab">
 
                     </div>
-                    <div class="tab-pane fade" id="install" role="tabpanel" aria-labelledby="install-tab">...</div>
+                    <div class="tab-pane fade" id="install" role="tabpanel" aria-labelledby="install-tab">
+                        <?php if(!$installed): ?>
+                            <div class="alert alert-info" role="alert">
+                                Database should be empty!
+                            </div>
+                            <a role="button" class="btn btn-success" href="?install=1">Init Database(importing install.sql)</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
 
             </main>
