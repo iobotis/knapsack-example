@@ -36,6 +36,13 @@ if(!$installed) {
 
 if($installed) {
 
+    $shouldSeed = isset($_GET['option']) && $_GET['option'] === 'seed' ? 1: 0;
+    if($shouldSeed) {
+        $knapsackAlgo->seedDb(intval($_GET['total']), 0, intval($_GET['price']));
+        header('Location: /', true, 301);
+        exit();
+    }
+
     $totalItems = $knapsackAlgo->getTotalItems();
 
     $tableRange = range($tableStep, 500, $tableStep);
