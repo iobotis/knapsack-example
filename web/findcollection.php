@@ -38,17 +38,24 @@ $statistics = new Statistics($pdo, $config);
 $rowData = array();
 foreach ($collections as $collection) {
     $items = explode(',', $collection);
+    $itemsData = $statistics->getPricesForItems($items);
+    $itemsData = array_map(function ($value) use ($itemsData) {
+        return $itemsData[$value] + array('id' => $value);
+    }, $items);
+    usort($itemsData, function ($item1, $item2) {
+        return $item1['price'] - $item2['price'];
+    });
     $rowData[] = array(
         'ids' => $items,
-        'data' => $statistics->getPricesForItems($items)
+        'data' => $itemsData
     );
 }
 
 $totalPrices = array();
 foreach ($rowData as $collection) {
     $totalPrice = 0;
-    foreach ($collection['ids'] as $id) {
-        $totalPrice += $collection['data'][$id]['price'];
+    foreach ($collection['data'] as $item) {
+        $totalPrice += $item['price'];
     }
     $totalPrices[] = $totalPrice;
 }
@@ -81,10 +88,10 @@ foreach ($rowData as $collection) {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach ($collection['ids'] as $id): ?>
+                                <?php foreach ($collection['data'] as $item): ?>
                                     <tr>
-                                        <td><?php echo $id; ?></td>
-                                        <td><?php echo $collection['data'][$id]['price']; ?></td>
+                                        <td><?php echo $item['id']; ?></td>
+                                        <td><?php echo $item['price']; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>
