@@ -97,7 +97,7 @@ $randomColors = array_map(function ($value) {
                             <a class="nav-link" id="install-tab" data-toggle="tab" href="#install" role="tab" aria-controls="install" aria-selected="false">Install & Seed</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Saved Collections</a>
+                            <a class="nav-link" id="saved-collections-tab" data-toggle="tab" href="#saved-collections" role="tab" aria-controls="contact" aria-selected="false">Saved Collections</a>
                         </li>
                     </ul>
                 </div>
@@ -238,8 +238,12 @@ $randomColors = array_map(function ($value) {
                             </form>
                         <?php endif; ?>
                     </div>
+                    <div class="tab-pane fade" id="saved-collections" role="tabpanel" aria-labelledby="saved-collections-tab">
+                        <hr/>
+                        <h2>Saved collections <span class="badge badge-secondary">New</span></h2>
+                        <hr/>
+                    </div>
                 </div>
-
             </main>
         </div>
     </div>
