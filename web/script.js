@@ -6,7 +6,7 @@ $(document).ready(function () {
             type: 'POST',
             data : $('#find-collection').serialize(),
             success: function(html){
-                $('#collection-info').html(html);
+                $('#collection-info').hide().html(html).fadeIn('slow');
             }
         });
         return false;

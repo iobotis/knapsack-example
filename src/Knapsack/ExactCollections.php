@@ -79,6 +79,7 @@ class ExactCollections implements KnapsackInterface {
             $items = explode(',', $collection);
             $this->insertToResults($collection, count($items), 500);
         }
+        return $collections;
     }
 
 }

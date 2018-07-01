@@ -6,7 +6,7 @@ CREATE TABLE `%items%` (
 );
 
 CREATE TABLE `results` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `totalItems` int(5) NOT NULL,
   `totalPrice` double(12,2) NOT NULL,
   `items` varchar(2047) NOT NULL,
