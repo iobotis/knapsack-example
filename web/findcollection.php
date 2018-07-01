@@ -14,6 +14,7 @@ $config->tableName = $table;
 
 $number = isset($_POST['number']) ? intval($_POST['number']): 1;
 $type = isset($_POST['type']) ? intval($_POST['type']): 1;
+$shouldSave = isset($_POST['number']) ? intval($_POST['number']): false;
 
 $knapsackAlgo = new ExactCollections($pdo, $config);
 if($type === 2) {
@@ -22,16 +23,22 @@ if($type === 2) {
 
 $collections = array();
 
-if($number === 1) {
-    try {
-        $collections[] = $knapsackAlgo->findOneCollection();
+if(!$shouldSave) {
+    if($number === 1) {
+        try {
+            $collections[] = $knapsackAlgo->findOneCollection();
+        }
+        catch(\Exception $e) {
+        }
     }
-    catch(\Exception $e) {
+    else {
+        $collections = $knapsackAlgo->findMultipleCollections($number);
     }
 }
 else {
-    $collections = $knapsackAlgo->findMultipleCollections($number);
+    $collections = $knapsackAlgo->findAndSaveCollections($number);
 }
+
 
 $statistics = new Statistics($pdo, $config);
 
@@ -59,6 +66,9 @@ foreach ($rowData as $collection) {
     }
     $totalPrices[] = $totalPrice;
 }
+
+$shouldSave = isset($_POST['number']) ? intval($_POST['number']): false;
+
 
 ?>
 <?php if(empty($collections)): ?>

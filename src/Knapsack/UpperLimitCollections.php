@@ -12,6 +12,11 @@ class UpperLimitCollections implements KnapsackInterface {
 
     use InstallSQLTrait;
 
+    use SaveResultTrait {
+        InstallSQLTrait::setPdo insteadof SaveResultTrait;
+        SaveResultTrait::setPdo as protected setPdoForSaveResultTrait;
+    }
+
     private $pdo;
 
     public function __construct(\PDO $pdo, Config $config)
@@ -55,6 +60,11 @@ class UpperLimitCollections implements KnapsackInterface {
 
     public function findAndSaveCollections($total = 10)
     {
-        // TODO: Implement findAndSaveCollections() method.
+        $collections = $this->findMultipleCollections($total);
+        foreach($collections as $collection) {
+            $items = explode(',', $collection);
+            $this->insertToResults($collection, count($items), 500);
+        }
+        return $collections;
     }
 }

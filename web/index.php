@@ -180,6 +180,12 @@ $randomColors = array_map(function ($value) {
                                     <button type="submit" class="btn btn-primary btn-lg" style="position: absolute;bottom: 0">Find collection</button>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-check">
+                                    <input name="save" type="checkbox" class="form-check-input" id="saveCollection">
+                                    <label class="form-check-label" for="saveCollection">Save collections</label>
+                                </div>
+                            </div>
                         </form>
                         <div id="collection-info">
 
